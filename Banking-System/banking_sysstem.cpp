@@ -147,7 +147,7 @@ class Bank{
       }
     }
 
-    //functions for calling other functions to interate the modules
+    //functions for calling other functions to integrate the modules
     void bankFacilities(void){
 
       int x = bankMenu();
