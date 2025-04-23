@@ -4,7 +4,6 @@ using namespace std;
 
 class Bank{
   private:
-    // static double deposite = 0;
     double deposite = 0;
     double withDraw;
 
@@ -13,7 +12,6 @@ class Bank{
     void depositeBalance(){
 
       double tempMoneyHolder;
-      // double* ptr = &deposite;
 
       cout << "Enter the balance to be deposite:\t";
       cin >> tempMoneyHolder;
@@ -29,7 +27,7 @@ class Bank{
       else{
 
         deposite = deposite + tempMoneyHolder;
-        // *ptr = *ptr + tempMoneyHolder;//problem
+
         cout<<endl;
   
         cout<<"------------------------------Deposite Balance------------------------------"<<endl;
