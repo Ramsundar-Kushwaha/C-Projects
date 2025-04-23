@@ -1,4 +1,4 @@
-//C++ - Project - 01 - Banking Program
+//C++ - Project - 01 - Banking Program - Console Application
 #include<iostream>
 using namespace std;
 
