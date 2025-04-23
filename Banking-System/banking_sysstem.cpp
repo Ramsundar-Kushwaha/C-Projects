@@ -43,7 +43,7 @@ class Bank{
     }
 
     //method to Show Balance the balance
-    void ShowBalance(){
+    void showBalance(){
       cout<<endl;
 
       cout<<"------------------------------Current Balance------------------------------"<<endl;
@@ -127,7 +127,7 @@ class Bank{
 
       if(action == 2){
 
-        ShowBalance();
+        showBalance();
         cout<<endl;
         return 1;
 
