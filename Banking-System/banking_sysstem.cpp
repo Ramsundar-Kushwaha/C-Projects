@@ -15,7 +15,18 @@ class Bank{
 
       cout << "Enter the balance to be deposite:\t";
       cin >> tempMoneyHolder;
-      if(tempMoneyHolder <= 0){
+
+      //Exception handling or Error handling
+      try{
+        if(cin.fail()){
+          throw invalid_argument("Invalid Input");
+        }
+
+        else if(tempMoneyHolder <= 0){
+          throw out_of_range("Deposite Must be greater than 0 $");
+        }
+      }
+      catch(...){
         cout<<endl;
         cout<<"------------------------------Deposite Balance------------------------------"<<endl;
         cout<<endl;
@@ -24,19 +35,16 @@ class Bank{
         cout<<endl;
         cout<<"----------------------------------------------------------------------------"<<endl;
       }
-      else{
 
-        deposite = deposite + tempMoneyHolder;
+      deposite = deposite + tempMoneyHolder;
 
-        cout<<endl;
-  
-        cout<<"------------------------------Deposite Balance------------------------------"<<endl;
-        cout<<endl;
-        cout<<"[Deposited Amount:\t"<<tempMoneyHolder<<"$\t\t";
-        cout<<"Status:\t"<<"Successfull.]"<<endl;
-        cout<<endl;
-        cout<<"----------------------------------------------------------------------------"<<endl;
-      }
+      cout<<endl;
+      cout<<"------------------------------Deposite Balance------------------------------"<<endl;
+      cout<<endl;
+      cout<<"[Deposited Amount:\t"<<tempMoneyHolder<<"$\t\t";
+      cout<<"Status:\t"<<"Successfull.]"<<endl;
+      cout<<endl;
+      cout<<"----------------------------------------------------------------------------"<<endl;
 
     }
 
@@ -56,27 +64,40 @@ class Bank{
     void drawBalance(){
       cout<<"Enter Amount($):\t";
       cin >> withDraw;
-      cout<<endl;
 
-      if( withDraw > deposite){
-
-        cout<<"---------------------------------Withdraw---------------------------------"<<endl;
-        cout<<endl;
-        cout<<"[Insufficient Balance.]";
-        cout<<endl;
-        cout<<"---------------------------------------------------------------------------"<<endl;
-
+      //Exception handling or Error handling
+      try{
+        if(cin.fail()){
+          throw invalid_argument("Invalid input");
+        }
+        else if( withDraw > deposite){
+          throw out_of_range("out of range");
+        }
+        else if(withDraw <= 0 /*&& deposite >= 0*/){
+          throw logic_error("Invalid amount");  
+        }
       }
 
-      if(withDraw <= 0 && deposite >= 0){
-        
+      catch(invalid_argument e){
+        cout << "Invalid Input";
+      }
+      catch(out_of_range e){
+        cout<<endl;
         cout<<"---------------------------------Withdraw---------------------------------"<<endl;
         cout<<endl;
-        cout<<"[Invalid Input.]";
+        cout<<"[Insufficient Balance.]" << e.what();
         cout<<endl;
         cout<<"---------------------------------------------------------------------------"<<endl;
-
       }
+      catch(logic_error e){
+        cout<<endl;
+        cout<<"---------------------------------Withdraw---------------------------------"<<endl;
+        cout<<endl;
+        cout<<"[Invalid Input.]" << e.what();
+        cout<<endl;
+        cout<<"---------------------------------------------------------------------------"<<endl;
+      }
+
 
       if(withDraw <= deposite && withDraw > 0){
 
@@ -108,7 +129,21 @@ class Bank{
 
       cout << "Choose Action:(1 - 3)\t";
       cin >> action;
+      try{
+        if(cin.fail()){
+          throw invalid_argument("invalid input");
+        }
+        else if(action <=0 || action > 3){
+          throw out_of_range("out of range");
+        }
+      }
 
+      catch(invalid_argument e){
+        cout << "Invalid Input" << e.what() << endl;
+      }
+      catch(out_of_range e){
+        cout << "out of range" << e.what() << endl;
+      }
       return action;
     }
 
