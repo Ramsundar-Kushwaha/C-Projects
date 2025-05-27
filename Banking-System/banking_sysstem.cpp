@@ -133,7 +133,7 @@ class Bank{
         if(cin.fail()){
           throw invalid_argument("invalid input");
         }
-        else if(action <=0 || action > 3){
+        else if(action <=0 || action > 4){
           throw out_of_range("out of range");
         }
       }
