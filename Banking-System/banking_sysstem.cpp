@@ -39,6 +39,27 @@ class Bank{
         cout<<"----------------------------------------------------------------------------"<<endl;
         exit(0);
       }
+
+      //file hanling for loading previous balance
+      fstream dload("deposite.txt", ios::in);
+      if(!dload.is_open()){
+        cerr << "File Processing | status: Failed" << endl;
+      }
+      else{
+        string line;
+        getline(dload, line);
+        if(!line.empty()){
+          try{
+            deposite = stod(line);
+          }
+          catch(const exception& e){
+            cerr << "Invalid Number Format in file" << endl;
+            exit(0);
+          }
+        }
+      }
+
+      dload.close();
       
       deposite = deposite + tempMoneyHolder;
 
@@ -51,15 +72,32 @@ class Bank{
       cout<<"----------------------------------------------------------------------------"<<endl;
 
       //file handling
-      fstream fin("deposite.txt", ios::out);
-      if(!fin.is_open()){
+      fstream dfin("deposite.txt", ios::out);
+      if(!dfin.is_open()){
         cerr << "File Processing | status: Failed" << endl;
       }
       else{
-        fin << deposite;
+        dfin << deposite;
       }
 
-      fin.close();
+      dfin.close();
+
+      //history file handling
+      fstream hfin("history.txt", ios::app);
+      if(!hfin.is_open()){
+        cerr << "File Processing | status : Failed"<<endl;
+      }
+      else{
+        hfin << endl;
+        hfin << "------------------------------Deposite Balance------------------------------" << endl;
+        hfin << endl;
+        hfin << "[Deposited Amount:\t"<<tempMoneyHolder << "$\t\t";
+        hfin << "Status:\t"<<"Successfull.]" << endl;
+        hfin << endl;
+        hfin << "----------------------------------------------------------------------------" << endl;
+        hfin << endl;
+      }
+      hfin.close();
 
     }
 
@@ -68,13 +106,13 @@ class Bank{
     //method to Show Balance the balance
     void showBalance(){
 
-      fstream fr("deposite.txt", ios::in);
-      if(!fr.is_open()){
+      fstream dfr("deposite.txt", ios::in);
+      if(!dfr.is_open()){
         cerr << "File Processing | status: unsuccessful" << endl;
       }
       else{
         string line;
-        getline(fr, line);
+        getline(dfr, line);
         try{
           deposite = stod(line);
         }
@@ -85,7 +123,7 @@ class Bank{
 
         // deposite += acbalance;
       }
-      fr.close();
+      dfr.close();
 
       cout<<endl;
       cout<<"------------------------------Current Balance------------------------------"<<endl;
@@ -94,6 +132,22 @@ class Bank{
       cout<<endl;
       cout<<"----------------------------------------------------------------------------"<<endl;
 
+      //history file handling
+      fstream hfr("history.txt", ios::app);
+      if(!hfr.is_open()){
+        cerr << "File Processing | status : Failed" << endl;
+      }
+      else{
+        hfr << endl;
+        hfr << "------------------------------Current Balance------------------------------" << endl;
+        hfr << endl;
+        hfr << "[Current Balance:\t"<<deposite<<"$]" << endl;
+        hfr << endl;
+        hfr << "----------------------------------------------------------------------------" << endl;
+        hfr << endl;
+      }
+
+      hfr.close();
     }
 
 
@@ -152,15 +206,33 @@ class Bank{
         cout<<"---------------------------------------------------------------------------"<<endl;
 
         //file handling
-        fstream file("deposite.txt", ios::out);
-        if(!file.is_open()){
+        fstream dfile("deposite.txt", ios::out);
+        if(!dfile.is_open()){
           cerr << "File Processing | status : unsuccessful";
         }
         else{
-          file << deposite;
+          dfile << deposite;
         }
 
-        file.close();
+        dfile.close();
+
+        //history file handling
+        fstream hfile("history.txt", ios::app);
+        if(!hfile.is_open()){
+          cerr << "File Processing | status : Failed" << endl;
+        }
+        else{
+          hfile << endl;
+          hfile << "---------------------------------Withdraw---------------------------------" << endl;
+          hfile << endl;
+          hfile << "[Withdraw Amount:\t" << withDraw << "$\t\t";
+          hfile << "Status:\t" << "Successfull.]" << endl;
+          hfile << endl;
+          hfile << "---------------------------------------------------------------------------" << endl;
+          hfile << endl;
+        }
+
+        hfile.close();
 
       }
 
@@ -233,7 +305,15 @@ class Bank{
       }
 
       else{
-
+        fstream hfile("history.txt", ios::app);
+        if(!hfile.is_open()){
+          cerr << "File Processing | status : Failed" << endl;
+        }
+        else{
+          hfile << endl;
+          hfile << "------------------------------Exit | Successfull------------------------------" << endl;
+          hfile << endl;
+        }
         return 0;
       }
     }
