@@ -78,10 +78,10 @@ class Bank{
         }
       }
 
-      catch(invalid_argument e){
+      catch(invalid_argument& e){
         cout << "Invalid Input";
       }
-      catch(out_of_range e){
+      catch(out_of_range& e){
         cout<<endl;
         cout<<"---------------------------------Withdraw---------------------------------"<<endl;
         cout<<endl;
@@ -89,7 +89,7 @@ class Bank{
         cout<<endl;
         cout<<"---------------------------------------------------------------------------"<<endl;
       }
-      catch(logic_error e){
+      catch(logic_error& e){
         cout<<endl;
         cout<<"---------------------------------Withdraw---------------------------------"<<endl;
         cout<<endl;
@@ -138,10 +138,10 @@ class Bank{
         }
       }
 
-      catch(invalid_argument e){
+      catch(invalid_argument& e){
         cout << "Invalid Input" << e.what() << endl;
       }
-      catch(out_of_range e){
+      catch(out_of_range& e){
         cout << "out of range" << e.what() << endl;
       }
       return action;
