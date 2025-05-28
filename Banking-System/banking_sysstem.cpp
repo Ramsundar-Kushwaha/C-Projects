@@ -1,5 +1,8 @@
 //C++ - Project - 01 - Banking Program - Console Application
 #include<iostream>
+#include<fstream>
+#include<string>
+
 using namespace std;
 
 class Bank{
@@ -34,8 +37,9 @@ class Bank{
         cout<<endl;
         cout<<endl;
         cout<<"----------------------------------------------------------------------------"<<endl;
+        exit(0);
       }
-
+      
       deposite = deposite + tempMoneyHolder;
 
       cout<<endl;
@@ -46,12 +50,44 @@ class Bank{
       cout<<endl;
       cout<<"----------------------------------------------------------------------------"<<endl;
 
+      //file handling
+      fstream fin("deposite.txt", ios::out);
+      if(!fin.is_open()){
+        cerr << "File Processing | status: Failed" << endl;
+      }
+      else{
+        fin << deposite;
+      }
+
+      fin.close();
+
     }
 
+
+// ---------------------------------------------------------------------------------------------------------------------------
     //method to Show Balance the balance
     void showBalance(){
-      cout<<endl;
 
+      fstream fr("deposite.txt", ios::in);
+      if(!fr.is_open()){
+        cerr << "File Processing | status: unsuccessful" << endl;
+      }
+      else{
+        string line;
+        getline(fr, line);
+        try{
+          deposite = stod(line);
+        }
+        catch(const exception& e){
+          cerr << "Invalid Number Format in file" << endl;
+          exit(0);
+        }
+
+        // deposite += acbalance;
+      }
+      fr.close();
+
+      cout<<endl;
       cout<<"------------------------------Current Balance------------------------------"<<endl;
       cout<<endl;
       cout<<"[Current Balance:\t"<<deposite<<"$]"<<endl;
@@ -59,7 +95,9 @@ class Bank{
       cout<<"----------------------------------------------------------------------------"<<endl;
 
     }
-    
+
+
+// ---------------------------------------------------------------------------------------------------------------------------    
     //method for balance withDraw
     void drawBalance(){
       cout<<"Enter Amount($):\t";
@@ -78,24 +116,27 @@ class Bank{
         }
       }
 
-      catch(invalid_argument& e){
+      catch(const invalid_argument& e){
         cout << "Invalid Input";
+        exit(0);
       }
-      catch(out_of_range& e){
+      catch(const out_of_range& e){
         cout<<endl;
         cout<<"---------------------------------Withdraw---------------------------------"<<endl;
         cout<<endl;
         cout<<"[Insufficient Balance.]" << e.what();
         cout<<endl;
         cout<<"---------------------------------------------------------------------------"<<endl;
+        exit(0);
       }
-      catch(logic_error& e){
+      catch(const logic_error& e){
         cout<<endl;
         cout<<"---------------------------------Withdraw---------------------------------"<<endl;
         cout<<endl;
         cout<<"[Invalid Input.]" << e.what();
         cout<<endl;
         cout<<"---------------------------------------------------------------------------"<<endl;
+        exit(0);
       }
 
 
@@ -110,10 +151,23 @@ class Bank{
         cout<<endl;
         cout<<"---------------------------------------------------------------------------"<<endl;
 
+        //file handling
+        fstream file("deposite.txt", ios::out);
+        if(!file.is_open()){
+          cerr << "File Processing | status : unsuccessful";
+        }
+        else{
+          file << deposite;
+        }
+
+        file.close();
+
       }
 
     }
 
+
+// ---------------------------------------------------------------------------------------------------------------------------
     //Bank Menu
     int bankMenu(void){
       int action;
@@ -140,13 +194,17 @@ class Bank{
 
       catch(invalid_argument& e){
         cout << "Invalid Input" << e.what() << endl;
+        return 0;
       }
       catch(out_of_range& e){
         cout << "out of range" << e.what() << endl;
+        return 0;
       }
       return action;
     }
 
+
+// ---------------------------------------------------------------------------------------------------------------------------
     //verify condition and performs menu action provided by user
     int performActions(int action) {
 
@@ -180,6 +238,8 @@ class Bank{
       }
     }
 
+
+// ---------------------------------------------------------------------------------------------------------------------------
     //functions for calling other functions to integrate the modules
     void bankFacilities(void){
 
@@ -199,6 +259,9 @@ class Bank{
     }
 };
 
+
+
+// ---------------------------------------------------------------------------------------------------------------------------
 int main(){
   cout<<"**************************** BANKING PROGRAM ****************************";
   Bank menu;
