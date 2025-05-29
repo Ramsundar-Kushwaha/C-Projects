@@ -5,82 +5,6 @@
 #include<cctype>
 using namespace std;
 
-/*
-//signUp and Login feature is under construction now
-class accountLoginSignUp{
-  public:
-  accountLoginSignUp(){
-    int choice;
-    cout << "Welcome User:" << endl;
-    cout << "1.Login" << endl;
-    cout << "2.signUp" << endl;
-    cout << "Enter Your Choice: ";
-    cin >> choice;
-
-    try{
-      if(cin.fail()){
-        throw invalid_argument("Invalid Input : ");
-      }
-      else if(choice <= 0){
-        throw -1;
-      }
-      else if(choice > 2){
-        throw 1;
-      }
-    }
-    catch(invalid_argument& e){
-      cout << "Number Only";
-      exit(0);
-    }
-    catch(...){
-      cout << "Number Should Be Choosen either 1 or 2";
-      exit(0);
-    }
-
-    if(choice == 2){
-      signUp();
-    }
-  }
-
-  //for signUp or creating new account
-  void signUp(){
-    string userName;
-    int password;
-
-    cout << "Sign Up here..." << endl;
-    cout << "Enter Your Full Name: ";
-
-    cin.ignore();
-    getline(cin, userName);
-    cout << "Password: ";
-    cin >> password;
-
-    try{
-      if(cin.fail()){
-        throw invalid_argument("invalid input : ");
-      }
-    }
-    catch(invalid_argument& e){
-      cout << "only numbers are allowed" << endl;
-      exit(0);
-    }
-    cin.ignore();
-
-    fstream sfile(userName + ".txt", ios::out);
-    if(!sfile.is_open()){
-      cerr << "file processing | status : unsucessful.";
-    }
-    else{
-      cout << "wait we are processing your data:";
-    }
-    sfile << userName;
-    sfile << endl;
-    sfile << password;
-    cout << endl;
-    cout << "Procceed Successfully";
-  }
-};
-*/
 
 // ---------------------------------------------------------------------------------------------------------------------------
 //Banking System - Class
@@ -94,7 +18,7 @@ class Bank{
     void depositeBalance(){
 
       double tempMoneyHolder;
-
+      
       cout << "Enter the balance to be deposit:\t";
       cin >> tempMoneyHolder;
 
@@ -137,11 +61,11 @@ class Bank{
           }
         }
       }
-
+      
       dload.close();
-
+      
       deposite = deposite + tempMoneyHolder;
-
+      
       cout<<endl;
       cout<<"------------------------------Deposite Balance------------------------------"<<endl;
       cout<<endl;
@@ -180,8 +104,8 @@ class Bank{
 
     }
 
-
-// ---------------------------------------------------------------------------------------------------------------------------
+    
+    // ---------------------------------------------------------------------------------------------------------------------------
     //method to Show Balance the balance
     void showBalance(){
 
@@ -234,7 +158,7 @@ class Bank{
     void drawBalance(){
       cout<<"Enter Amount($):\t";
       cin >> withDraw;
-
+      
       //Exception handling or Error handling
       try{
         if(cin.fail()){
@@ -293,7 +217,7 @@ class Bank{
         }
 
         dfile.close();
-
+        
         //history file handling
         fstream hfile("history.txt", ios::app);
         if(!hfile.is_open()){
@@ -318,7 +242,7 @@ class Bank{
 
 
 // ---------------------------------------------------------------------------------------------------------------------------
-    //Bank Menu
+//Bank Menu
     int bankMenu(void){
       int action;
 
@@ -330,7 +254,7 @@ class Bank{
       cout<<"|3. Withdraw Balance    |"<<endl;
       cout<<"|4. Exit (press any key)|"<<endl;
       cout<<"-------------------------"<<endl;
-
+      
       cout << "Choose Action:(1 - 3)\t";
       cin >> action;
       try{
@@ -353,7 +277,7 @@ class Bank{
       return action;
     }
 
-
+    
 // ---------------------------------------------------------------------------------------------------------------------------
     //verify condition and performs menu action provided by user
     int performActions(int action) {
@@ -371,7 +295,7 @@ class Bank{
         showBalance();
         cout<<endl;
         return 1;
-
+        
       }
 
       if(action == 3){
@@ -396,34 +320,129 @@ class Bank{
       }
     }
 
-
+    
 // ---------------------------------------------------------------------------------------------------------------------------
-    //functions for calling other functions to integrate the modules
-    void bankFacilities(void){
-
-      int x = bankMenu();
-      int y = performActions(x);
-
-      if(y == 1){
-
-        bankFacilities();
-
-      }
-
-      else{
-
-        cout<<"Exit Done";
-      }
-    }
+//functions for calling other functions to integrate the modules
+void bankFacilities(void){
+  
+  int x = bankMenu();
+  int y = performActions(x);
+  
+  if(y == 1){
+    
+    bankFacilities();
+    
+  }
+  
+  else{
+    
+    cout<<"Exit Done";
+  }
+}
 };
 
 
+//signUp and Login feature is under construction now
+class accountLoginSignUp{
+  private:
+  string userName;
+  int password;
+
+  public:
+  accountLoginSignUp(){
+    int choice;
+    cout << "Welcome User:" << endl;
+    cout << "1.Login" << endl;
+    cout << "2.signUp" << endl;
+    cout << "Enter Your Choice: ";
+    cin >> choice;
+
+    try{
+      if(cin.fail()){
+        throw invalid_argument("Invalid Input : ");
+      }
+      else if(choice <= 0){
+        throw -1;
+      }
+      else if(choice > 2){
+        throw 1;
+      }
+    }
+    catch(invalid_argument& e){
+      cout << "Number Only";
+      exit(0);
+    }
+    catch(...){
+      cout << "Number Should Be Choosen either 1 or 2";
+      exit(0);
+    }
+
+    if(choice == 2){
+      signUp();
+    }
+  }
+
+  //for signUp or creating new account
+  void signUp(){
+
+    cout << "Sign Up here..." << endl;
+    cout << "Enter Your Full Name: ";
+
+    cin.ignore();
+    getline(cin, userName);
+    cout << "Password: ";
+    cin >> password;
+
+    try{
+      if(cin.fail()){
+        throw invalid_argument("invalid input : ");
+      }
+    }
+    catch(invalid_argument& e){
+      cout << "only numbers are allowed" << endl;
+      exit(0);
+    }
+    cin.ignore();
+
+    // int status = signUpValidity();//it will verify wether the account is already created or not.
+    // if(status == 0){
+    //   exit(0);
+    // }
+    // else{
+      
+    //   // bankFacilities();
+    // }
+    fstream sfile(userName + ".txt", ios::out);
+    if(!sfile.is_open()){
+      cerr << "file processing | status : unsucessful.";
+    }
+    else{
+      cout << "wait we are processing your data:";
+    }
+    sfile << userName;
+    sfile << endl;
+    sfile << password;
+    cout << endl;
+    cout << "Procceed Successfully";
+    sfile.close();//file closed
+  }
+
+  int signUpValidity(){
+    fstream vfile(userName + ".txt", ios::in);
+    if(vfile.is_open()){
+      cerr << "already have an account";
+      vfile.close();
+      return 0;
+    }
+  }
+
+};
 
 // ---------------------------------------------------------------------------------------------------------------------------
 int main(){
   cout<<"**************************** BANKING PROGRAM ****************************";
-  Bank menu;
-  menu.bankFacilities();
-  // accountLoginSignUp obj;
+  // Bank menu;
+  // menu.bankFacilities();
+  accountLoginSignUp obj;
   return 0;
 }
