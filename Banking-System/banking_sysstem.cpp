@@ -2,9 +2,15 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-
 using namespace std;
+class accountLoginSignUp{
+  private:
+    string userName;
+    string password;
+};
 
+// ---------------------------------------------------------------------------------------------------------------------------
+//Banking System - Class
 class Bank{
   private:
     double deposite = 0;
