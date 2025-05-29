@@ -404,6 +404,7 @@ class accountLoginSignUp{
     }
     cin.ignore();
 
+    //need to correct this for succefull module integration
     // int status = signUpValidity();//it will verify wether the account is already created or not.
     // if(status == 0){
     //   exit(0);
@@ -412,6 +413,7 @@ class accountLoginSignUp{
       
     //   // bankFacilities();
     // }
+
     fstream sfile(userName + ".txt", ios::out);
     if(!sfile.is_open()){
       cerr << "file processing | status : unsucessful.";
@@ -441,8 +443,8 @@ class accountLoginSignUp{
 // ---------------------------------------------------------------------------------------------------------------------------
 int main(){
   cout<<"**************************** BANKING PROGRAM ****************************";
-  // Bank menu;
-  // menu.bankFacilities();
-  accountLoginSignUp obj;
+  Bank menu;
+  menu.bankFacilities();
+  // accountLoginSignUp obj;
   return 0;
 }
