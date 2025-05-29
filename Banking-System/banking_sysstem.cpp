@@ -2,8 +2,10 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<cctype>
 using namespace std;
 
+/*
 //signUp and Login feature is under construction now
 class accountLoginSignUp{
   public:
@@ -39,6 +41,8 @@ class accountLoginSignUp{
       signUp();
     }
   }
+
+  //for signUp or creating new account
   void signUp(){
     string userName;
     int password;
@@ -48,7 +52,6 @@ class accountLoginSignUp{
 
     cin.ignore();
     getline(cin, userName);
-
     cout << "Password: ";
     cin >> password;
 
@@ -77,6 +80,7 @@ class accountLoginSignUp{
     cout << "Procceed Successfully";
   }
 };
+*/
 
 // ---------------------------------------------------------------------------------------------------------------------------
 //Banking System - Class
@@ -321,7 +325,7 @@ class Bank{
       cout<<endl;
 
       cout<<"-------------------------"<<endl;
-      cout<<"|1. Deposit Balance    |"<<endl;
+      cout<<"|1. Deposit Balance     |"<<endl;
       cout<<"|2. Show Balance        |"<<endl;
       cout<<"|3. Withdraw Balance    |"<<endl;
       cout<<"|4. Exit (press any key)|"<<endl;
