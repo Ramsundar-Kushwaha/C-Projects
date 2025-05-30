@@ -96,7 +96,7 @@ class Bank:public Variables{
       }
       else{
         hfin << endl;
-        hfin << "------------------------------Deposite Balance------------------------------" << endl;
+        hfin << "------------------------------Deposit Balance------------------------------" << endl;
         hfin << endl;
         hfin << "[Deposited Amount:\t"<<tempMoneyHolder << "$\t\t";
         hfin << "Status:\t"<<"Successful.]" << endl;
@@ -317,7 +317,7 @@ class Bank:public Variables{
         }
         else{
           hfile << endl;
-          hfile << "------------------------------Exit | Successfull------------------------------" << endl;
+          hfile << "------------------------------Exit | Successful------------------------------" << endl;
           hfile << endl;
         }
         return 0;
@@ -408,7 +408,6 @@ class accountLoginSignUp:public Bank{
     }
     cin.ignore();
 
-    //need to correct this for succefull module integration
     int status = signUpValidity();//it will verify wether the account is already created or not.
     if(status == 0){
       exit(0);
