@@ -5,14 +5,18 @@
 #include<cctype>
 using namespace std;
 
+//for storing variables only which is used by many classes
+class Variables{
+  protected:
+  double deposite = 0;
+  double withDraw;
+  string userName;
+  int password;
+};
 
 // ---------------------------------------------------------------------------------------------------------------------------
 //Banking System - Class
-class Bank{
-  private:
-    double deposite = 0;
-    double withDraw;
-
+class Bank:public Variables{
   public:
     //method for depositing balance
     void depositeBalance(){
@@ -44,7 +48,7 @@ class Bank{
       }
 
       //file handling for loading previous balance
-      fstream dload("deposit.txt", ios::in);
+      fstream dload("D_" + userName + ".txt", ios::in);
       if(!dload.is_open()){
         cerr << "File Processing | status: Failed" << endl;
       }
@@ -75,7 +79,7 @@ class Bank{
       cout<<"----------------------------------------------------------------------------"<<endl;
 
       //file handling
-      fstream dfin("deposit.txt", ios::out);
+      fstream dfin("D_" + userName + ".txt", ios::out);
       if(!dfin.is_open()){
         cerr << "File Processing | status: Failed" << endl;
       }
@@ -86,7 +90,7 @@ class Bank{
       dfin.close();
 
       //history file handling
-      fstream hfin("history.txt", ios::app);
+      fstream hfin("H_" + userName + ".txt", ios::app);
       if(!hfin.is_open()){
         cerr << "File Processing | status : Failed"<<endl;
       }
@@ -109,7 +113,7 @@ class Bank{
     //method to Show Balance the balance
     void showBalance(){
 
-      fstream dfr("deposit.txt", ios::in);
+      fstream dfr("D_" + userName + ".txt", ios::in);
       if(!dfr.is_open()){
         cerr << "File Processing | status: unsuccessful" << endl;
       }
@@ -135,7 +139,7 @@ class Bank{
       cout<<"----------------------------------------------------------------------------"<<endl;
 
       //history file handling
-      fstream hfr("history.txt", ios::app);
+      fstream hfr("H_" + userName + ".txt", ios::app);
       if(!hfr.is_open()){
         cerr << "File Processing | status : Failed" << endl;
       }
@@ -207,8 +211,8 @@ class Bank{
         cout<<endl;
         cout<<"---------------------------------------------------------------------------"<<endl;
 
-        //file handling
-        fstream dfile("deposit.txt", ios::out);
+        //deposit file handling
+        fstream dfile("D_" + userName + ".txt", ios::out);
         if(!dfile.is_open()){
           cerr << "File Processing | status : unsuccessful";
         }
@@ -219,7 +223,7 @@ class Bank{
         dfile.close();
         
         //history file handling
-        fstream hfile("history.txt", ios::app);
+        fstream hfile("H_" + userName + ".txt", ios::app);
         if(!hfile.is_open()){
           cerr << "File Processing | status : Failed" << endl;
         }
@@ -307,7 +311,7 @@ class Bank{
       }
 
       else{
-        fstream hfile("history.txt", ios::app);
+        fstream hfile("H_" + userName + ".txt", ios::app);
         if(!hfile.is_open()){
           cerr << "File Processing | status : Failed" << endl;
         }
@@ -343,11 +347,7 @@ void bankFacilities(void){
 
 
 //signUp and Login feature is under construction now
-class accountLoginSignUp{
-  private:
-  string userName;
-  int password;
-
+class accountLoginSignUp:public Bank{
   public:
   accountLoginSignUp(){
     int choice;
@@ -405,36 +405,43 @@ class accountLoginSignUp{
     cin.ignore();
 
     //need to correct this for succefull module integration
-    // int status = signUpValidity();//it will verify wether the account is already created or not.
-    // if(status == 0){
-    //   exit(0);
-    // }
-    // else{
-      
-    //   // bankFacilities();
-    // }
-
-    fstream sfile(userName + ".txt", ios::out);
-    if(!sfile.is_open()){
-      cerr << "file processing | status : unsucessful.";
+    int status = signUpValidity();//it will verify wether the account is already created or not.
+    if(status == 0){
+      exit(0);
     }
     else{
-      cout << "wait we are processing your data:";
+      
+      fstream sfile("ID_" + userName + ".txt", ios::out);
+
+      if(!sfile.is_open()){
+        cerr << "file processing | status : unsucessful.";
+      }
+      else{
+        cout << "wait we are processing your data:";
+      }
+
+      sfile << userName;
+      sfile << endl;
+      sfile << password;
+      cout << endl;
+      cout << "Procceed Successfully";
+      sfile.close();//file closed
     }
-    sfile << userName;
-    sfile << endl;
-    sfile << password;
-    cout << endl;
-    cout << "Procceed Successfully";
-    sfile.close();//file closed
+    
+    bankFacilities();
+
   }
 
+  //to check wether the account is already created or not.
   int signUpValidity(){
-    fstream vfile(userName + ".txt", ios::in);
+    fstream vfile("ID_" + userName + ".txt", ios::in);
     if(vfile.is_open()){
       cerr << "already have an account";
       vfile.close();
       return 0;
+    }
+    else{
+      return 1;
     }
   }
 
@@ -443,8 +450,8 @@ class accountLoginSignUp{
 // ---------------------------------------------------------------------------------------------------------------------------
 int main(){
   cout<<"**************************** BANKING PROGRAM ****************************";
-  Bank menu;
-  menu.bankFacilities();
-  // accountLoginSignUp obj;
+  // Bank menu;
+  // menu.bankFacilities();
+  accountLoginSignUp obj;
   return 0;
 }
