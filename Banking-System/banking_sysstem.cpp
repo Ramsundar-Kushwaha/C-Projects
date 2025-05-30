@@ -345,12 +345,13 @@ void bankFacilities(void){
 }
 };
 
-
+//---------------------------------------------------------------------------------------------------------------------
 //signUp and Login feature is under construction now
 class accountLoginSignUp:public Bank{
   public:
   accountLoginSignUp(){
     int choice;
+    cout << endl;
     cout << "Welcome User:" << endl;
     cout << "1.Login" << endl;
     cout << "2.signUp" << endl;
@@ -379,6 +380,9 @@ class accountLoginSignUp:public Bank{
 
     if(choice == 2){
       signUp();
+    }
+    else{
+      login();
     }
   }
 
@@ -427,7 +431,8 @@ class accountLoginSignUp:public Bank{
       cout << "Procceed Successfully";
       sfile.close();//file closed
     }
-    
+    cout << endl;
+    cout << "WELCOME" << userName << endl;
     bankFacilities();
 
   }
@@ -436,11 +441,53 @@ class accountLoginSignUp:public Bank{
   int signUpValidity(){
     fstream vfile("ID_" + userName + ".txt", ios::in);
     if(vfile.is_open()){
-      cerr << "already have an account";
+      cerr << "already have an account : try login to your account";
       vfile.close();
       return 0;
     }
     else{
+      return 1;
+    }
+  }
+
+  void login(){
+    cout << "Login here..." << endl;
+    cout << "Enter Your Full Name: ";
+
+    cin.ignore();
+    getline(cin, userName);
+
+    cout << "Password: ";
+    cin >> password;
+
+    try{
+      if(cin.fail()){
+        throw invalid_argument("Invalid Password : ");
+      }
+    }
+    catch(invalid_argument& e){
+      cout << "Only Numbers are Allowed.";
+      exit(0);
+    }
+
+    int status = loginValidity();
+
+    if(status == 0){
+      exit(0);
+    }
+    else{
+      cout << "WELCOME " << userName << endl;
+      bankFacilities();
+    }
+  }
+  //login verification method
+  int loginValidity(){
+    fstream lfile("ID_" + userName + ".txt", ios::in);
+    if(!lfile.is_open()){
+      cerr << "acoutn doesn't exist : try signUp";
+      return 0;
+    }else{
+      lfile.close();
       return 1;
     }
   }
@@ -450,8 +497,6 @@ class accountLoginSignUp:public Bank{
 // ---------------------------------------------------------------------------------------------------------------------------
 int main(){
   cout<<"**************************** BANKING PROGRAM ****************************";
-  // Bank menu;
-  // menu.bankFacilities();
   accountLoginSignUp obj;
   return 0;
 }
