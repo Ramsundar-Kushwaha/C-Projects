@@ -3,6 +3,7 @@
 #include<fstream>
 #include<string>
 #include<cctype>
+
 using namespace std;
 
 //for storing variables only which is used by many classes
@@ -160,9 +161,39 @@ class Bank:public Variables{
 // ---------------------------------------------------------------------------------------------------------------------------
     //method for balance withDraw
     void drawBalance(){
+
+      if(deposite == 0){
+
+        fstream lodB("D_" + userName + ".txt", ios::in);
+
+        if(!lodB.is_open()){
+          cerr << "unable to load deposit balance";
+          exit(0);
+        }
+        else{
+
+          string line;
+          int dep;
+          getline(lodB, line);
+
+          if(!line.empty()){
+            try{
+              dep = stoi(line);
+            }
+            catch(...){
+              cout << "balance conversion error";
+              exit(0);
+            }
+
+            deposite += dep;
+            lodB.close();
+          }
+        }
+      }
+      
       cout<<"Enter Amount($):\t";
       cin >> withDraw;
-      
+
       //Exception handling or Error handling
       try{
         if(cin.fail()){
@@ -423,15 +454,17 @@ class accountLoginSignUp:public Bank{
         cout << "wait we are processing your data:";
       }
 
-      sfile << userName;
-      sfile << endl;
       sfile << password;
+      sfile << endl;
+
+      sfile << userName;
       cout << endl;
+
       cout << "Procceed Successfully";
       sfile.close();//file closed
     }
     cout << endl;
-    cout << "WELCOME" << userName << endl;
+    cout << "WELCOME " << userName << endl;
     bankFacilities();
 
   }
@@ -486,9 +519,31 @@ class accountLoginSignUp:public Bank{
       cerr << "acoutn doesn't exist : try signUp";
       return 0;
     }else{
-      lfile.close();
-      return 1;
+      string pass;
+      int pas;
+      getline(lfile, pass);
+      try{
+        pas = stoi(pass);
+      }
+      catch(...){
+        cout << "Password Conversion Error";
+        exit(0);
+      }
+
+      if(pas == password){
+        lfile.close();
+        return 1;
+      }
+      else{
+        cerr << "Password Not Matched";
+        return 0;
+      }
     }
+  }
+
+  ~accountLoginSignUp(){
+    cout << endl;
+    cout << "Memory Successfully Freed By Destructor";
   }
 
 };
