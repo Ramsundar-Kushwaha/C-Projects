@@ -531,6 +531,7 @@ class accountLoginSignup:public Bank{
       bankFacilities();
     }
   }
+  
   //login verification method
   int loginValidity(){
     fstream lfile("ID_" + userName + ".txt", ios::in);
