@@ -1,15 +1,26 @@
-//C++ - Project - 01 - Banking Program - Console Application
+//C++ - Project - 01 - Banking Program - Console Application - for study purpose only
 #include<iostream>
 #include<fstream>
 #include<string>
 #include<cctype>
+#include<limits>//for using cin.ignore(numeric_limits<stramsize>::max(), '\n')
+#include<cstdlib>//for using clearScreen();
 
 using namespace std;
+
+//for clearing screen
+void clearScreen(){
+  #ifdef _WIN32
+    system("cls");
+  #else
+    system("clear");
+  #endif
+}
 
 //for storing variables only which is used by many classes
 class Variables{
   protected:
-  double deposite = 0;
+  double deposit = 0;
   double withDraw;
   string userName;
   int password;
@@ -20,7 +31,7 @@ class Variables{
 class Bank:public Variables{
   public:
     //method for depositing balance
-    void depositeBalance(){
+    void depositBalance(){
 
       double tempMoneyHolder;
       
@@ -30,6 +41,8 @@ class Bank:public Variables{
       //Exception handling or Error handling
       try{
         if(cin.fail()){
+          cin.clear(); //clear error flag
+          cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer upto maximum character and stoped when new line character found
           throw invalid_argument("Invalid Input");
         }
 
@@ -41,11 +54,11 @@ class Bank:public Variables{
         cout<<endl;
         cout<<"------------------------------Deposit Balance------------------------------"<<endl;
         cout<<endl;
-        cout << "[Invalid Deposit\t\t"<<"status:\tUnsucceful]";
+        cout << "[Invalid Deposit\t\t"<<"status:\tUnsuccessful]";
         cout<<endl;
         cout<<endl;
         cout<<"----------------------------------------------------------------------------"<<endl;
-        exit(0);
+        return;
       }
 
       //file handling for loading previous balance
@@ -58,34 +71,34 @@ class Bank:public Variables{
         getline(dload, line);
         if(!line.empty()){
           try{
-            deposite = stod(line);
+            deposit = stod(line);
           }
           catch(const exception& e){
             cerr << "Invalid Number Format in file" << endl;
-            exit(0);
+            return;
           }
         }
       }
       
       dload.close();
       
-      deposite = deposite + tempMoneyHolder;
+      deposit = deposit + tempMoneyHolder;
       
       cout<<endl;
-      cout<<"------------------------------Deposite Balance------------------------------"<<endl;
+      cout<<"------------------------------deposit Balance------------------------------"<<endl;
       cout<<endl;
       cout<<"[Deposited Amount:\t"<<tempMoneyHolder<<"$\t\t";
       cout<<"Status:\t"<<"Successful.]"<<endl;
       cout<<endl;
       cout<<"----------------------------------------------------------------------------"<<endl;
 
-      //file handling
+      //file handling -- writting to file
       fstream dfin("D_" + userName + ".txt", ios::out);
       if(!dfin.is_open()){
         cerr << "File Processing | status: Failed" << endl;
       }
       else{
-        dfin << deposite;
+        dfin << to_string(deposit);
       }
 
       dfin.close();
@@ -99,7 +112,7 @@ class Bank:public Variables{
         hfin << endl;
         hfin << "------------------------------Deposit Balance------------------------------" << endl;
         hfin << endl;
-        hfin << "[Deposited Amount:\t"<<tempMoneyHolder << "$\t\t";
+        hfin << "[Deposited Amount:\t"<< to_string(tempMoneyHolder) << "$\t\t";
         hfin << "Status:\t"<<"Successful.]" << endl;
         hfin << endl;
         hfin << "----------------------------------------------------------------------------" << endl;
@@ -116,17 +129,17 @@ class Bank:public Variables{
 
       fstream dfr("D_" + userName + ".txt", ios::in);
       if(!dfr.is_open()){
-        cerr << "File Processing | status: unsuccessful" << endl;
+        cerr << "File Processing | status: Unsuccessful" << endl;
       }
       else{
         string line;
         getline(dfr, line);
         try{
-          deposite = stod(line);
+          deposit = stod(line);
         }
         catch(const exception& e){
           cerr << "Invalid Number Format in file" << endl;
-          exit(0);
+          return;
         }
 
       }
@@ -135,7 +148,7 @@ class Bank:public Variables{
       cout<<endl;
       cout<<"------------------------------Current Balance------------------------------"<<endl;
       cout<<endl;
-      cout<<"[Current Balance:\t"<<deposite<<"$]"<<endl;
+      cout<<"[Current Balance:\t"<<deposit<<"$]"<<endl;
       cout<<endl;
       cout<<"----------------------------------------------------------------------------"<<endl;
 
@@ -148,7 +161,7 @@ class Bank:public Variables{
         hfr << endl;
         hfr << "------------------------------Current Balance------------------------------" << endl;
         hfr << endl;
-        hfr << "[Current Balance:\t"<<deposite<<"$]" << endl;
+        hfr << "[Current Balance:\t"<<to_string(deposit)<<"$]" << endl;
         hfr << endl;
         hfr << "----------------------------------------------------------------------------" << endl;
         hfr << endl;
@@ -162,13 +175,13 @@ class Bank:public Variables{
     //method for balance withDraw
     void drawBalance(){
 
-      if(deposite == 0){
+      if(deposit == 0){
 
         fstream lodB("D_" + userName + ".txt", ios::in);
 
         if(!lodB.is_open()){
           cerr << "unable to load deposit balance";
-          exit(0);
+          return;
         }
         else{
 
@@ -178,14 +191,14 @@ class Bank:public Variables{
 
           if(!line.empty()){
             try{
-              dep = stoi(line);
+              dep = stod(line);
             }
             catch(...){
               cout << "balance conversion error";
-              exit(0);
+              return;
             }
 
-            deposite += dep;
+            deposit += dep;
             lodB.close();
           }
         }
@@ -197,10 +210,12 @@ class Bank:public Variables{
       //Exception handling or Error handling
       try{
         if(cin.fail()){
+          cin.clear(); // clear error fla
+          cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer upto maximum character and stoped when new line character found
           throw invalid_argument("Invalid input");
         }
-        else if( withDraw > deposite){
-          throw out_of_range("out of range");
+        else if( withDraw > deposit){
+          throw out_of_range(" out of range");
         }
         else if(withDraw <= 0){
           throw logic_error("Invalid amount");
@@ -209,7 +224,7 @@ class Bank:public Variables{
 
       catch(const invalid_argument& e){
         cout << "Invalid Input";
-        exit(0);
+        return;
       }
       catch(const out_of_range& e){
         cout<<endl;
@@ -218,7 +233,7 @@ class Bank:public Variables{
         cout<<"[Insufficient Balance.]" << e.what();
         cout<<endl;
         cout<<"---------------------------------------------------------------------------"<<endl;
-        exit(0);
+        return;
       }
       catch(const logic_error& e){
         cout<<endl;
@@ -227,13 +242,13 @@ class Bank:public Variables{
         cout<<"[Invalid Input.]" << e.what();
         cout<<endl;
         cout<<"---------------------------------------------------------------------------"<<endl;
-        exit(0);
+        return;
       }
 
 
-      if(withDraw <= deposite && withDraw > 0){
+      if(withDraw <= deposit && withDraw > 0){
 
-        deposite = deposite - withDraw;
+        deposit = deposit - withDraw;
 
         cout<<"---------------------------------Withdraw---------------------------------"<<endl;
         cout<<endl;
@@ -245,10 +260,10 @@ class Bank:public Variables{
         //deposit file handling
         fstream dfile("D_" + userName + ".txt", ios::out);
         if(!dfile.is_open()){
-          cerr << "File Processing | status : unsuccessful";
+          cerr << "File Processing | sUatus : unsuccessful";
         }
         else{
-          dfile << deposite;
+          dfile << to_string(deposit);
         }
 
         dfile.close();
@@ -262,7 +277,7 @@ class Bank:public Variables{
           hfile << endl;
           hfile << "---------------------------------Withdraw---------------------------------" << endl;
           hfile << endl;
-          hfile << "[Withdraw Amount:\t" << withDraw << "$\t\t";
+          hfile << "[Withdraw Amount:\t" << to_string(withDraw) << "$\t\t";
           hfile << "Status:\t" << "Successful.]" << endl;
           hfile << endl;
           hfile << "---------------------------------------------------------------------------" << endl;
@@ -294,6 +309,8 @@ class Bank:public Variables{
       cin >> action;
       try{
         if(cin.fail()){
+          cin.clear(); //clear error flag
+          cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer upto maximum character and stoped when new line character found
           throw invalid_argument("invalid input");
         }
         else if(action <=0 || action > 4){
@@ -318,15 +335,15 @@ class Bank:public Variables{
     int performActions(int action) {
 
       if(action == 1){
-
-        depositeBalance();
+        clearScreen();
+        depositBalance();
         cout<<endl;
         return 1;
 
       }
 
       if(action == 2){
-
+        clearScreen();
         showBalance();
         cout<<endl;
         return 1;
@@ -334,7 +351,7 @@ class Bank:public Variables{
       }
 
       if(action == 3){
-
+        clearScreen();
         drawBalance();
         cout<<endl;
         return 1;
@@ -342,6 +359,7 @@ class Bank:public Variables{
       }
 
       else{
+        clearScreen();
         fstream hfile("H_" + userName + ".txt", ios::app);
         if(!hfile.is_open()){
           cerr << "File Processing | status : Failed" << endl;
@@ -360,37 +378,34 @@ class Bank:public Variables{
 //functions for calling other functions to integrate the modules
 void bankFacilities(void){
   
-  int x = bankMenu();
-  int y = performActions(x);
-  
-  if(y == 1){
-    
-    bankFacilities();
-    
+  while (true){
+    int action = bankMenu();
+    int result = performActions(action);
+    if(result == 0)
+      break;
   }
-  
-  else{
-    
-    cout<<"Exit Done";
-  }
+  cout << "Exit Done" << endl;
 }
 };
 
 //---------------------------------------------------------------------------------------------------------------------
 //signUp and Login feature is under construction now
-class accountLoginSignUp:public Bank{
+class accountLoginSignup:public Bank{
   public:
-  accountLoginSignUp(){
+  void LoginSignup(){
     int choice;
-    cout << endl;
-    cout << "Welcome User:" << endl;
-    cout << "1.Login" << endl;
-    cout << "2.signUp" << endl;
+    cout << endl << endl << endl;
+    cout << "             Welcome User:       " << endl;
+    cout <<"----------------------------------------"<< endl;
+    cout <<"|   1. Login" << "      |     " << "   2. signUp   |" << endl;
+    cout <<"----------------------------------------"<< endl << endl;
     cout << "Enter Your Choice: ";
     cin >> choice;
 
     try{
       if(cin.fail()){
+        cin.clear(); //clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer upto maximum character and stoped when new line character found
         throw invalid_argument("Invalid Input : ");
       }
       else if(choice <= 0){
@@ -402,11 +417,11 @@ class accountLoginSignUp:public Bank{
     }
     catch(invalid_argument& e){
       cout << "Number Only";
-      exit(0);
+      return;
     }
     catch(...){
       cout << "Number Should Be Choosen either 1 or 2";
-      exit(0);
+      return;
     }
 
     if(choice == 2){
@@ -430,31 +445,33 @@ class accountLoginSignUp:public Bank{
 
     try{
       if(cin.fail()){
+        cin.clear(); //clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer upto maximum character and stoped when new line character found
         throw invalid_argument("invalid input : ");
       }
     }
     catch(invalid_argument& e){
       cout << "only numbers are allowed" << endl;
-      exit(0);
+      return;
     }
     cin.ignore();
 
-    int status = signUpValidity();//it will verify wether the account is already created or not.
+    int status = signupValidity();//it will verify wether the account is already created or not.
     if(status == 0){
-      exit(0);
+      return;
     }
     else{
       
       fstream sfile("ID_" + userName + ".txt", ios::out);
 
       if(!sfile.is_open()){
-        cerr << "file processing | status : unsucessful.";
+        cerr << "file processing | status : Unsuccessful.";
       }
       else{
         cout << "wait we are processing your data:";
       }
 
-      sfile << password;
+      sfile << to_string(password);
       sfile << endl;
 
       sfile << userName;
@@ -470,7 +487,7 @@ class accountLoginSignUp:public Bank{
   }
 
   //to check wether the account is already created or not.
-  int signUpValidity(){
+  int signupValidity(){
     fstream vfile("ID_" + userName + ".txt", ios::in);
     if(vfile.is_open()){
       cerr << "already have an account : try login to your account";
@@ -494,18 +511,20 @@ class accountLoginSignUp:public Bank{
 
     try{
       if(cin.fail()){
+        cin.clear(); //clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer upto maximum character and stoped when new line character found
         throw invalid_argument("Invalid Password : ");
       }
     }
     catch(invalid_argument& e){
       cout << "Only Numbers are Allowed.";
-      exit(0);
+      return;
     }
 
     int status = loginValidity();
 
     if(status == 0){
-      exit(0);
+      return;
     }
     else{
       cout << "WELCOME " << userName << endl;
@@ -516,7 +535,7 @@ class accountLoginSignUp:public Bank{
   int loginValidity(){
     fstream lfile("ID_" + userName + ".txt", ios::in);
     if(!lfile.is_open()){
-      cerr << "acoutn doesn't exist : try signUp";
+      cerr << "account doesn't exist : try signUp";
       return 0;
     }else{
       string pass;
@@ -527,7 +546,7 @@ class accountLoginSignUp:public Bank{
       }
       catch(...){
         cout << "Password Conversion Error";
-        exit(0);
+        return 0;
       }
 
       if(pas == password){
@@ -541,16 +560,12 @@ class accountLoginSignUp:public Bank{
     }
   }
 
-  ~accountLoginSignUp(){
-    cout << endl;
-    cout << "Memory Successfully Freed By Destructor";
-  }
-
 };
 
 // ---------------------------------------------------------------------------------------------------------------------------
 int main(){
   cout<<"**************************** BANKING PROGRAM ****************************";
-  accountLoginSignUp obj;
+  accountLoginSignup obj;
+  obj.LoginSignup();
   return 0;
 }
