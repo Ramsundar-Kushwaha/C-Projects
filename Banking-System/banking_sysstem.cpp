@@ -297,13 +297,15 @@ class Bank:public Variables{
       int action;
 
       cout<<endl;
-
-      cout<<"-------------------------"<<endl;
-      cout<<"|1. Deposit Balance     |"<<endl;
-      cout<<"|2. Show Balance        |"<<endl;
-      cout<<"|3. Withdraw Balance    |"<<endl;
-      cout<<"|4. Exit (press any key)|"<<endl;
-      cout<<"-------------------------"<<endl;
+      cout<<"+------------------------+------------------------+"<<endl;
+      cout<<"|                        |                        |"<<endl;
+      cout<<"|  1. Deposit Balance    |     2. Show Balance    |"<<endl;
+      cout<<"|                        |                        |"<<endl;
+      cout<<"+------------------------+------------------------+"<<endl;
+      cout<<"|                        |                        |"<<endl;
+      cout<<"|  3. Withdraw Balance   |         4. Exit        |"<<endl;
+      cout<<"|                        |                        |"<<endl;
+      cout<<"+------------------------+------------------------+"<<endl;
       
       cout << "Choose Action:(1 - 3)\t";
       cin >> action;
@@ -395,10 +397,12 @@ class accountLoginSignup:public Bank{
   void LoginSignup(){
     int choice;
     cout << endl << endl << endl;
-    cout << "             Welcome User:       " << endl;
-    cout <<"----------------------------------------"<< endl;
-    cout <<"|   1. Login" << "      |     " << "   2. signUp   |" << endl;
-    cout <<"----------------------------------------"<< endl << endl;
+    cout << "                WELCOME USER            " << endl;
+    cout <<"+-------------------------------------------+" << endl;
+    cout <<"|                     |                     |" << endl;
+    cout <<"|       1. Login      |       2. signUp     |" << endl;
+    cout <<"|                     |                     |" << endl;
+    cout <<"+-------------------------------------------+" << endl << endl;
     cout << "Enter Your Choice: ";
     cin >> choice;
 
